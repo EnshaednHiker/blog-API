@@ -1,6 +1,14 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const app = express();
+const server = express();
 
-const shoppingListRouter = require('./blogRouter');
+const blogRouter = require('./blogRouter');
+
+server.use(morgan('common'));
+
+server.use('/blog-posts', recipesRouter);
+
+server.listen(process.env.PORT || 8080, () => {
+  console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
+});
