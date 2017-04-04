@@ -12,9 +12,23 @@ const {BlogPosts} = require('./models');
 BlogPosts.create("Bad Morning, Bad Coffee","Blah blah blah. Bad Morning, bad coffee.","Ira Glass");
 BlogPosts.create("Great Morning, Great Coffee","Blah blah blah. Great morning, great coffee.", "Ira Glass", new Date (2015, 10, 3));
 
+
+router.get('/:id' || '/', (req, res) => {
+    if (req.params.id !==null){    
+        res.json(BlogPosts.get(req.params.id));
+    }
+    else {
+        res.json(BlogPosts.get());
+    }
+});
+
 router.get('/', (req, res) => {
+        
   res.json(BlogPosts.get());
 });
+
+
+
 
 router.delete('/:id', (req, res) => {
   BlogPosts.delete(req.params.id);
