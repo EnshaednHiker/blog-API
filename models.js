@@ -16,13 +16,14 @@ function StorageException(message) {
 }
 
 const BlogPosts = {
-  create: function(title, content, author, publishDate) {
+  create: function(title, content, author, publishDate, modifiedDate) {
     const post = {
       id: uuid.v4(),
       title: title,
       content: content,
       author: author,
-      publishDate: publishDate || Date.now()
+      publishDate: publishDate || new Date(),
+      modifiedDate: modifiedDate || new Date()
     };
     this.posts.push(post);
     return post;
@@ -55,7 +56,7 @@ const BlogPosts = {
         `Can't update item \`${id}\` because doesn't exist.`)
     }
     this.posts[postIndex] = Object.assign(
-      this.posts[postIndex], updatedPost);
+      this.posts[postIndex], updatedPost, {modifiedDate: new Date()});
     return this.posts[postIndex];
   }
 };

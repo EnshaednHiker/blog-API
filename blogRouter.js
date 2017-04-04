@@ -12,23 +12,13 @@ const {BlogPosts} = require('./models');
 BlogPosts.create("Bad Morning, Bad Coffee","Blah blah blah. Bad Morning, bad coffee.","Ira Glass");
 BlogPosts.create("Great Morning, Great Coffee","Blah blah blah. Great morning, great coffee.", "Ira Glass", new Date (2015, 10, 3));
 
-
-router.get('/:id' || '/', (req, res) => {
-    if (req.params.id !==null){    
-        res.json(BlogPosts.get(req.params.id));
-    }
-    else {
-        res.json(BlogPosts.get());
-    }
+router.get('/:id', (req, res) => {      
+    res.json(BlogPosts.get(req.params.id)); 
 });
 
-router.get('/', (req, res) => {
-        
+router.get('/', (req, res) => {    
   res.json(BlogPosts.get());
 });
-
-
-
 
 router.delete('/:id', (req, res) => {
   BlogPosts.delete(req.params.id);
@@ -38,7 +28,7 @@ router.delete('/:id', (req, res) => {
 
 router.post('/', jsonParser, (req, res) => {
   // ensure at least `title,` `content,` and 'author' are in request body while `publishDate` is optional.
-  const requiredFields = ['title', 'content', 'author', 'publishDate'];
+  const requiredFields = ['title', 'content', 'author'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -72,8 +62,8 @@ router.put('/:id', jsonParser, (req, res) => {
   const updatedItem = BlogPosts.update({
     id: req.params.id,
     title: req.body.title,
-    content: req.body.content,
-    publishDate: req.body.publishDate
+    content: req.body.content
+    
   });
   res.status(204).json(updatedItem);
 })
