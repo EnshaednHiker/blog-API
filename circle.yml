@@ -8,4 +8,4 @@ deployment:
   staging:
     branch: master
     heroku:
-      appname: infinite-woodland-61685
+      appname: blog-api-1234567
