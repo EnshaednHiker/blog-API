@@ -1,0 +1,11 @@
+machine:
+  node:
+    version: 7.8.0
+dependencies:
+  override:
+    - npm install
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: infinite-woodland-61685
