@@ -9,3 +9,4 @@ deployment:
     branch: master
     heroku:
       appname: blog-api-1234567
+      url: "git@heroku.com:blog-api-1234567.git"
