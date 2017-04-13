@@ -1,20 +1,61 @@
-const express = require('express');
-const router = express.Router();
 
 const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+
+const express = require('express');
+const router = express.Router();
+router.use(bodyParser.json());
+
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 
-const {BlogPosts} = require('./models');
 
-//BlogPosts.create(title,content,author,publishDate);
 
-BlogPosts.create("Bad Morning, Bad Coffee","Blah blah blah. Bad Morning, bad coffee.","Ira Glass");
-BlogPosts.create("Great Morning, Great Coffee","Blah blah blah. Great morning, great coffee.", "Ira Glass", new Date (2015, 10, 3));
+const {Blog} = require('./models');
 
+router.get('/', (req, res) => {
+    const filters = {};
+    const queryableFields = Object.keys(req.body);
+    queryableFields.forEach(field => {
+        if (req.query[field]) {
+            filters[field] = req.query[field];
+        }
+    });
+    Blog
+        .find(filters)
+        .exec()
+        .then(Blogs => res.json(
+            Blogs.map(blog => blog.apiRepr())
+        ))
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({message: 'Internal server error'})
+        });
+});
+
+router.get('/:id', (req, res) => {
+  Blog
+    // this is a convenience method Mongoose provides for searching
+    // by the object _id property
+    .findById(req.params.id)
+    .exec()
+    .then(blog =>res.json(blog.apiRepr()))
+    .catch(err => {
+      console.error(err);
+        res.status(500).json({message: 'Internal server error'})
+    });
+});
+
+
+
+
+
+
+/*
 router.get('/:id', (req, res) => {      
     res.json(BlogPosts.get(req.params.id)); 
 });
+
 
 router.get('/', (req, res) => {    
   res.json(BlogPosts.get());
@@ -70,3 +111,5 @@ router.put('/:id', jsonParser, (req, res) => {
 
 
 module.exports = router;
+
+*/
