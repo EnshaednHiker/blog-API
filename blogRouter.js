@@ -5,21 +5,15 @@ const express = require('express');
 const router = express.Router();
 router.use(bodyParser.json());
 
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+
+
 
 const {Blog} = require('./models');
 
 router.get('/', (req, res) => {
-    const filters = {};
-    const queryableFields = Object.keys(req.body);
-    queryableFields.forEach(field => {
-        if (req.query[field]) {
-            filters[field] = req.query[field];
-        }
-    });
+   console.log(req.query);
     Blog
-        .find(filters)
+        .find(req.query || {})
         .exec()
         .then(Blogs => res.json(
             Blogs.map(blog => blog.apiRepr())
